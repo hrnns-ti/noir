@@ -94,9 +94,10 @@ export default function Home() {
           <div className="h-full w-full justify-center items-center">
             <div className="h-full w-full flex gap-8 justify-center items-center">
               {topList.map((anime: any) => (
-                <div
+                <Link
+                  href={`/anime/${anime.mal_id}`}
                   key={anime.mal_id}
-                  className="relative flex flex-col aspect-3/5 gap-6 w-72 h-160"
+                  className="relative flex flex-col aspect-3/5 gap-6 w-72 h-160 hover:scale-101 transition-transform duration-300"
                 >
                   <div className="relative h-full w-full">
                     <div className="flex flex-col justify-between h-full">
@@ -116,7 +117,7 @@ export default function Home() {
                     <h1 className="font-semibold text-xl line-clamp-1">{(anime.title).toUpperCase()}</h1>
                     <p className="font-semibold text-gray-500 text-sm line-clamp-1">{(anime.studios[0].name).toUpperCase()}</p>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>
@@ -170,7 +171,12 @@ export default function Home() {
                     <p className="font-semibold tracking-wide">
                       SCORE: {topPick.score || 'N/A'}
                     </p>
-                    <a href="" className="tracking-widest px-14 py-1 border-2 font-semibold text-black bg-white hover:bg-black hover:text-white">DETAIL</a>
+                    <Link 
+                      href={`/anime/${topPick.mal_id}`} 
+                      className="tracking-widest px-14 py-1 border-2 font-semibold text-black bg-white hover:bg-black hover:text-white"
+                    >
+                      DETAIL
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -205,12 +211,13 @@ export default function Home() {
                   ))}
                 </div>
               </div>
-              <a 
+              {/* ISSUE */}
+              <Link 
                 className="flex flex-row gap-12 justify-center w-full items-center border-2 font-semibold tracking-widest py-6 hover text-black bg-white hover:bg-black hover:text-white" 
-                href=""
+                href={`/anime?q=&filter=airing`}
               >
                 SEE MORE
-              </a>
+              </Link>
             </div>
           </div>
         </div>

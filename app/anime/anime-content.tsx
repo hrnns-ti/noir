@@ -3,8 +3,8 @@
 import { useSearchParams } from 'next/navigation'
 import Image from 'next/image'
 import { useEffect, useState, useCallback } from 'react'
+import Link from 'next/link'
 
-import { Search } from 'lucide-react'
 
 export default function AnimeContent() {
   const searchParams = useSearchParams()
@@ -63,7 +63,8 @@ export default function AnimeContent() {
 
         <div className='flex flex-row flex-wrap gap-4 justify-center mb-12'>
           {animeList.map((anime: any, index: number) => (
-            <div 
+            <Link
+              href={`/anime/${anime.mal_id}`}
               key={`${anime.mal_id}-${index}`} 
               className='w-80 flex border border-gray-300 h-60 rounded-xl shadow-md/0 hover:shadow-2xl hover:scale-[1.001] transition-all'
             >
@@ -89,7 +90,7 @@ export default function AnimeContent() {
                   </p>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
 
