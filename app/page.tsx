@@ -11,6 +11,7 @@ export default function Home() {
   
   const [searchQuery, setSearchQuery] = useState('')
   const [topList, setTopList] = useState<any[]>([])
+  const [topAiring, setTopAiring] = useState<any[]>([])
   const router = useRouter()
 
   const fetchTrending = useCallback(async() => {
@@ -25,8 +26,21 @@ export default function Home() {
     } 
   }, [])
 
+  const fetchTopAiring = useCallback(async() => {
+    try {
+      const response = await fetch(
+        `https://api.jikan.moe/v4/top/anime?limit=5&filter=airing`
+      )
+      const { data } = await response.json()
+      setTopAiring(data)
+    } catch (error) {
+      console.error('gagal mengambil anime: ', error)
+    }
+  },[])
+
   useEffect(() => {
     fetchTrending()
+    fetchTopAiring()
   },[])
 
   const handleSearch = (e: React.FormEvent) => {
@@ -36,6 +50,9 @@ export default function Home() {
       router.push(`/anime?q=${searchQuery}`)
     }
   }
+
+  const topPick = topAiring[0]
+  const runnerPick = topAiring.slice(1, 5)
 
   return (
     <main>
@@ -90,8 +107,9 @@ export default function Home() {
                       src={anime.images.jpg.large_image_url}
                       alt={anime.title}
                       fill
+                      priority
                       sizes=""
-                      className="object-cover grayscale-100 absolute h-3/4 -z-10"
+                      className="object-cover absolute h-3/4 -z-10"
                     />
                   </div>
                   <div className="h-1/4">
@@ -100,6 +118,99 @@ export default function Home() {
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+        </div>
+      </section>
+      <hr className="text-gray-200 mx-10 mb-24"></hr>
+      <section className="min-h-screen w-full px-28">
+        <div className="flex flex-row justify-between mb-4">
+          <h1 className="font-semibold">TOP AIRING ANIME</h1>
+        </div>
+        <hr className="text-gray-300" />
+        <div className="w-full flex mt-8 gap-8 h-full">
+          <div className="w-2/3 border border-gray-300 p-6">
+            {topPick && (
+              <div className="flex gap-8">
+                <div className="relative flex flex-col aspect-4/5 gap-6 w-108 h-160">
+                  <Image 
+                    src={topPick.images.webp.large_image_url}
+                    alt={topPick.title}
+                    fill
+                    unoptimized
+                    priority
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    className="object-cover absolute -z-10"
+                  />
+                </div>
+
+                <div className="flex flex-col justify-between">
+                  <div className="flex flex-col max-w-md gap-4">
+                    <div className="flex items-center">
+                      <h1 className="font-semibold text-3xl mb-3">
+                        {topPick.title.toUpperCase()}
+                      </h1>
+                      <p className="p-4 bg-black text-white font-semibold text-2xl">#1</p>
+                    </div>
+                    <p className="">
+                      {topPick.genres.map((genre: any) => (
+                        <span
+                          key={genre.mal_id}
+                          className="pr-4 text-xs font-bold text-gray-400 tracking-wider"
+                        >
+                          {genre.name.toUpperCase()}
+                        </span>
+                      ))}
+                    </p>
+                    <p className="text-gray-500 mb-4 line-clamp-4">
+                      {topPick.synopsis}
+                    </p>
+                  </div>
+                  <div className="flex flex-row gap-12 justify-between">
+                    <p className="font-semibold tracking-wide">
+                      SCORE: {topPick.score || 'N/A'}
+                    </p>
+                    <a href="" className="tracking-widest px-14 py-1 border-2 font-semibold text-black bg-white hover:bg-black hover:text-white">DETAIL</a>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+          <div className="w-1/3 border-t border-gray-300 justify-between items-center">
+            <div className="flex flex-col h-full">
+              <h3 className="font-bold text-sm text-gray-500 py-4 border-b-2">
+                RUNNER-UPS INDEX
+              </h3>
+              <div className="flex flex-col w-full h-full px-6 py-4 justify-between items-center">
+
+                <div className="flex flex-col gap-4">
+                  {runnerPick.map((anime: any, index: number) => (
+                    <div 
+                      key={anime.mal_id}
+                      className="flex gap-4 border-b border-gray-300 pb-4"
+                    >
+                      <div className="font-bold text-gray-400 w-8">
+                        #{index + 2}
+                      </div>
+
+                      <div>
+                        <h1 className="font-semibold line-clamp-1">
+                          {anime.title}
+                        </h1>
+                        <p className="text-sm text-gray-500">
+                          Score: {anime.score || 'N/A'}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <a 
+                className="flex flex-row gap-12 justify-center w-full items-center border-2 font-semibold tracking-widest py-6 hover text-black bg-white hover:bg-black hover:text-white" 
+                href=""
+              >
+                SEE MORE
+              </a>
             </div>
           </div>
         </div>
