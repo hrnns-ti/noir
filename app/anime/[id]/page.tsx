@@ -3,6 +3,7 @@
 import Image from "next/image"
 import Link from "next/link";
 import { useParams } from "next/navigation";
+export const runtime = 'edge';
 import { useEffect, useState, useCallback } from "react";
 
 
