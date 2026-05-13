@@ -27,7 +27,7 @@ export default function NavbarAnime() {
       </div>
       <div className="flex">
         <form 
-          className="flex border gap-4 px-3 py-1 relative justify-center rounded-md"
+          className="flex border gap-4 px-3 py-1 relative justify-center rounded-xs"
           onSubmit={handleSearch}
         >
           <div className="flex items-center pointer-events-none">
@@ -41,7 +41,7 @@ export default function NavbarAnime() {
             className="outline-0 text-md"
           />
           {searchQuery && (
-            <button type="button" onClick={() => setSearchQuery('')} className="absolute flex items-center right-0 top-1">
+            <button type="button" onClick={() => setSearchQuery('')} className="absolute flex items-center right-1 top-2">
               <X className="w-4 h-4 text-gray-400 hover:text-black transition-colors" />
             </button>
           )}
